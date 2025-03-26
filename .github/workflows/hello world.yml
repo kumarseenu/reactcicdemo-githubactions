@@ -5,4 +5,8 @@
       runs-on: ubuntu-latest
       steps:
       - name: greet user
-        run: echo "Hello World"
+        run: echo "Hello World$$$"
+      - name: bye user
+        run: echo "Goodbye World!!!"
+
+
