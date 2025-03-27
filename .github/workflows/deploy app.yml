@@ -1,5 +1,5 @@
 name: deploy app
-on: push
+on: [push,workflow_dispatch]
 jobs:
    test:
      runs-on: ubuntu-latest
@@ -16,6 +16,12 @@ jobs:
        uses: actions/setup-node@v4
        with:
          node-version: '22'
+     - name: Cache    
+       uses: actions/cache@v4
+       id: npm-cache
+       with:
+        path: node_modules
+        key: ${{ runner.os }}-node-${{ hashFiles('**/package-lock.json') }}
 
      - name: print node version
        run: |
@@ -23,6 +29,7 @@ jobs:
          echo "npm version is $(npm -v)"
 
      - name: install dependencies
+       if: steps.npm-cache.outputs.cache-hit != 'true'
        run: |
          echo "installing dependencies"
          npm install
@@ -46,8 +53,15 @@ jobs:
        uses: actions/setup-node@v4
        with:
          node-version: '22'
+     - name: Cache    
+       uses: actions/cache@v4
+       id: npm-cache
+       with:
+        path: node_modules
+        key: ${{ runner.os }}-node-${{ hashFiles('**/package-lock.json') }}
 
      - name: install dependencies
+       if: steps.npm-cache.outputs.cache-hit != 'true'
        run: |
          echo "installing dependencies"
          npm install
