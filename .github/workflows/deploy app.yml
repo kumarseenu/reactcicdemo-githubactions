@@ -35,6 +35,8 @@ jobs:
      - name: complete job
        run: echo "job completed"
    build:    
+     needs: test
+
      runs-on: ubuntu-latest
      steps:
      - name: get code
@@ -52,8 +54,18 @@ jobs:
 
      - name: run build
        run: |
-         echo "running tests"
+         echo "running build"
          npm run build
 
      - name: complete job
        run: echo "build job completed"
+   deploy:
+        needs: build
+        runs-on: ubuntu-latest
+        steps:
+        - name: deploy dist
+          run: |
+            echo "deploying dist"
+            echo "dist deployed"
+    
+      
