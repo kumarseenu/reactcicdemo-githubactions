@@ -70,6 +70,11 @@ jobs:
        run: |
          echo "running build"
          npm run build
+     - name: upload artifacts
+       uses: actions/upload-artifact@v4
+       with:
+        name: upload-files
+        path: dist
 
      - name: complete job
        run: echo "build job completed"
@@ -77,9 +82,14 @@ jobs:
         needs: build
         runs-on: ubuntu-latest
         steps:
+        - name: download artifacts
+          uses: actions/download-artifact@v4
+          with:
+            name: upload-files
+            path: dist
         - name: deploy dist
           run: |
-            echo "deploying dist"
-            echo "dist deployed"
+            ls dist
+            echo "dist directory displayed"
     
       
